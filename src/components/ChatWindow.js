@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import "./ChatWindow.css";
 import { getAIMessage } from "../api/api";
 import { marked } from "marked";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp, faStop } from '@fortawesome/free-solid-svg-icons';
 
 function ChatWindow() {
   const defaultMessage = [{
@@ -11,6 +13,7 @@ function ChatWindow() {
 
   const [messages, setMessages] = useState(defaultMessage);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -26,9 +29,11 @@ function ChatWindow() {
       // Set user message
       setMessages((prevMessages) => [...prevMessages, { role: "user", content: input }]);
       setInput("");
+      setIsLoading(true);
   
       // Call API & set assistant message
       const newMessage = await getAIMessage(input);
+      setIsLoading(false)
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     }
   };  
@@ -44,6 +49,13 @@ function ChatWindow() {
           )}
         </div>
       ))}
+      {isLoading && (
+        <div className="assistant-message-container">
+          <div className="message assistant-message shimmer-container">
+            <div className="shimmer"></div>
+          </div>
+        </div>
+      )}
       <div ref={messagesEndRef} />
       <div className="input-area">
         <input
@@ -58,8 +70,17 @@ function ChatWindow() {
           }}
           rows="3"
         />
-        <button className="send-button" onClick={() => handleSend(input)}>
-          Send
+        <button 
+          className="send-button" 
+          onClick={() => handleSend(input)}
+          disabled={!input.trim() || isLoading}
+          title={!input.trim() ? "Message is empty" : isLoading? "Fetching response..." : ""}
+          >
+          {isLoading ? (
+            <FontAwesomeIcon icon={faStop} className="icon"/> // Stop sign when loading
+          ) : (
+            <FontAwesomeIcon icon={faArrowUp} className="icon" /> // Up arrow for sending
+          )}
         </button>
       </div>
     </div>

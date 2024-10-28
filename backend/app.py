@@ -17,7 +17,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/ask": {"origins": "http://localhost:3000"}})
 
 # Initialize the OpenAI LLM
-llm = ChatOpenAI(model="gpt-4", temperature=0.7, openai_api_key=openai_api_key)
+llm = ChatOpenAI(model="gpt-4", temperature=0.7, openai_api_key=openai_api_key,
+ )
 
 # Initialize the Python REPL
 python_repl = PythonREPL()
@@ -39,7 +40,7 @@ agent_executor = create_csv_agent(
     tools=[repl_tool],
 )
 
-# Define a detailed prompt template to guide the agent
+# Prompt template to guide the agent
 prompt_template = PromptTemplate(
     input_variables=["user_question"],
     template=(
