@@ -207,3 +207,9 @@
   background-color: gray;
   cursor: not-allowed;
 }
+
+@media (max-width: 467px) {
+  .quick-question-button {
+    width: 100%;
+  }
+}
