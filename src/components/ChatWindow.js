@@ -3,13 +3,19 @@ import "./ChatWindow.css";
 import { getAIMessage } from "../api/api";
 import { marked } from "marked";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faStop } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faStop, faRobot } from '@fortawesome/free-solid-svg-icons';
 
 function ChatWindow() {
   const defaultMessage = [{
     role: "assistant",
-    content: "Hi, how can I help you today?"
+    content: "Welcome to Bao Distributors! We are a leader in construction and home materials, tools, and appliances. I’m here to help you with product recommendations and any questions you have about our offerings. How can I assist you today?"
   }];
+
+  const quickQuestions = [
+    "What brands of drills do you have?",
+    "Can you recommend products for bathroom renovation?",
+    "I'm looking for a sink. What options do you have?"
+  ];
 
   const [messages, setMessages] = useState(defaultMessage);
   const [input, setInput] = useState("");
@@ -30,13 +36,17 @@ function ChatWindow() {
       setMessages((prevMessages) => [...prevMessages, { role: "user", content: input }]);
       setInput("");
       setIsLoading(true);
-  
+
       // Call API & set assistant message
       const newMessage = await getAIMessage(input);
       setIsLoading(false)
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     }
-  };  
+  };
+
+  const handleQuickQuestionClick = (question) => {
+    handleSend(question);
+  };
 
   return (
     <div className="messages-container">
@@ -44,11 +54,40 @@ function ChatWindow() {
         <div key={index} className={`${message.role}-message-container`}>
           {message.content && (
             <div className={`message ${message.role}-message`}>
-              <div dangerouslySetInnerHTML={{ __html: marked(message.content).replace(/<p>|<\/p>/g, "") }}></div>
+              {message.role === "assistant" && (
+                <div className="message-wrapper">
+                  <FontAwesomeIcon icon={faRobot} className="bot-icon" />
+                  <div 
+                    dangerouslySetInnerHTML={{ 
+                      __html: marked(message.content).replace(/<p>|<\/p>/g, "") 
+                    }} 
+                  />
+                </div>
+              )}
+              {message.role === "user" && (
+                <div className="user-message-content">
+                  <div 
+                    dangerouslySetInnerHTML={{ 
+                      __html: marked(message.content).replace(/<p>|<\/p>/g, "") 
+                    }} 
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
       ))}
+
+      {messages.length === 1 && (
+        <div className="quick-questions">
+          {quickQuestions.map((question, index) => (
+            <button key={index} onClick={() => handleQuickQuestionClick(question)} className="quick-question-button">
+              {question}
+            </button>
+          ))}
+        </div>
+      )}
+
       {isLoading && (
         <div className="assistant-message-container">
           <div className="message assistant-message shimmer-container">
@@ -56,6 +95,7 @@ function ChatWindow() {
           </div>
         </div>
       )}
+
       <div ref={messagesEndRef} />
       <div className="input-area">
         <input
@@ -70,16 +110,16 @@ function ChatWindow() {
           }}
           rows="3"
         />
-        <button 
-          className="send-button" 
+        <button
+          className="send-button"
           onClick={() => handleSend(input)}
           disabled={!input.trim() || isLoading}
-          title={!input.trim() ? "Message is empty" : isLoading? "Fetching response..." : ""}
-          >
+          title={!input.trim() ? "Message is empty" : isLoading ? "Fetching response..." : ""}
+        >
           {isLoading ? (
-            <FontAwesomeIcon icon={faStop} className="icon"/> // Stop sign when loading
+            <FontAwesomeIcon icon={faStop} className="icon" />
           ) : (
-            <FontAwesomeIcon icon={faArrowUp} className="icon" /> // Up arrow for sending
+            <FontAwesomeIcon icon={faArrowUp} className="icon" />
           )}
         </button>
       </div>

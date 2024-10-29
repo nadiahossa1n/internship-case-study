@@ -10,7 +10,10 @@
   padding-bottom: 2px;
   font-size: 16px;
   margin-top: 60px; 
-  margin-bottom: 70px; 
+  margin-bottom: 70px;
+  max-width: 1020px; 
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .user-message-container,
@@ -62,67 +65,47 @@
   box-sizing: border-box;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
-.input-area {
-  font-size: 15px;
-  padding: 10px;
-  bottom: 0;
-  width: 100%;
+.message-wrapper {
   display: flex;
-  border-top: 1px solid #ccc;
-  background: #fff;
-  position: fixed;
-  width: calc(100% - 40px);
+  align-items: flex-start;
 }
 
-.input-area textarea {
-  font-size: 15px;
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  resize: none;
-  overflow-y: auto;
-  min-height: 200px;
-  max-height: 200px;
+.bot-icon {
   margin-right: 10px;
+  font-size: 1.5em;
+  color: #1b3875; 
 }
 
-.input-area input {
-  flex: 1;
-  padding: 10px;
-  margin-right: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.input-area button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: #121212;
-  color: white;
-  cursor: pointer;
+.quick-questions {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px;
   justify-content: center;
 }
 
-.input-area button .icon {
-  font-size: 18px;
+.quick-question-button {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background: linear-gradient(90deg, #1b3875, #001E80);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, transform 0.2s;
 }
 
-.input-area button:hover {
-  opacity: 0.8;
+.quick-question-button:hover {
+  background: #0033a5;
+  transform: scale(1.02);
 }
 
-.input-area button:disabled {
-  background-color: gray;
-  cursor: not-allowed;
+.quick-question-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
 }
 
 .shimmer-container {
@@ -157,4 +140,70 @@
   100% {
     transform: translateX(100%);
   }
+}
+
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.input-area {
+  font-size: 15px;
+  padding: 20px;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  background: #fff;
+  position: fixed;
+  max-width: 1020px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input-area textarea {
+  font-size: 15px;
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  resize: none;
+  overflow-y: auto;
+  min-height: 200px;
+  max-height: 200px;
+  margin-right: 10px;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.input-area button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #121212;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.input-area button .icon {
+  font-size: 18px;
+}
+
+.input-area button:hover {
+  opacity: 0.8;
+}
+
+.input-area button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
