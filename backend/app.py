@@ -13,7 +13,7 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize Flask
 app = Flask(__name__)
-CORS(app, resources={r"/ask": {"origins": "http://localhost:3000"}})
+CORS(app)
 
 # Initialize the OpenAI LLM
 llm = ChatOpenAI(model="gpt-4", temperature=0.7, openai_api_key=openai_api_key)
